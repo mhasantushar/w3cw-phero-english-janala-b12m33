@@ -18,8 +18,9 @@ const listLessonButtons = (lessons) => {
     // console.log(lesson);
     const buttonDiv = document.createElement("div");
     buttonDiv.innerHTML = `
-                <button onclick="loadWordsForSelLesson(${lesson.level_no})"
-                class="vocab-lesson-btn btn btn-soft btn-primary">
+                <button id="btn-lessonid-${lesson.level_no}" 
+                onclick="loadWordsForSelLesson(${lesson.level_no})"
+                class="vocab-lesson-btn btn btn-soft btn-primary btn-lesson">
                 <i class="fa-solid fa-book-open"></i> Lesson - ${lesson.level_no}</button>
                 `;
     buttonWrapper.appendChild(buttonDiv);
@@ -27,45 +28,68 @@ const listLessonButtons = (lessons) => {
 };
 
 const loadWordsForSelLesson = (selLevel) => {
-  document.getElementById("vocab-cards-missing").hidden = true;
-
   const url = "https://openapi.programming-hero.com/api/level/" + selLevel;
-  console.log(url);
+  // console.log(url);
 
   fetch(url)
     .then((resp) => resp.json())
-    .then((data) => displayWordsForSelLesson(data.data))
+    .then((data) => {
+      markSelectedLessonButton(selLevel);
+      displayWordsForSelLesson(data.data);
+    })
     .catch((err) => console.log("Error:", err));
+};
+
+const markSelectedLessonButton = (selLevel) => {
+  const lessonBtns = document.getElementsByClassName("btn-lesson");
+  // lessonBtns.forEach((btn) => {
+  //   btn.classList.remove("sel-lesson-btn");
+  // });
+  for (const btn of lessonBtns) {
+    btn.classList.remove("sel-lesson-btn");
+  }
+
+  const selButtonId = "btn-lessonid-" + selLevel;
+  document.getElementById(selButtonId).classList.add("sel-lesson-btn");
 };
 
 const displayWordsForSelLesson = (words) => {
   // console.log (words);
   const cardWrapper = document.getElementById("vocab-cards-wrapper");
   cardWrapper.innerHTML = "";
-
+  if (words.length === 0) {
+    // alert ("No data found");
+    cardWrapper.innerHTML = `
+          <div id="vocab-msg-nodata" class="col-span-full py-20">
+            <img class="mx-auto" src="./assets/alert-error.png" alt="Error!">
+            <p class="text-sm">
+              <span class="font-bangla">এই</span> Lesson <span class="font-bangla">এ এখনো কোন</span> Vocabulary <span class="font-bangla">যুক্ত করা হয়নি।</span></p>
+            <p class="mt-4 font-medium text-4xl">
+              <span class="font-bangla">নেক্সট</span> Lesson <span class="font-bangla">এ যান</span></p>
+          </div>
+    `;
+    return;
+  }
   words.forEach((word) => {
-    console.log(word);
+    // console.log(word);
     const cardDiv = document.createElement("div");
-    // cardDiv.innerHTML = `
-    //       <article class="bg-white p-14 rounded-xl h-full">
-    //         <h3 class="mb-3 font-bold text-3xl">${word.word}</h3>
-    //         <h4 class="mb-8 font-medium text-lg">Meaning / Pronounciation</h4>
-    //         <h3 class="mb-16 font-bangla font-semibold text-3xl">${word.meaning} / ${word.pronunciation}</h3>
-    //         <div class="flex justify-between gap-4">
-    //           <button class="bg-[#1a91ff1a] hover:bg-[#1a91ff66] btn"><i class="fa-solid fa-circle-info"></i></button>
-    //           <button class="bg-[#1a91ff1a] hover:bg-[#1a91ff66] btn"><i class="fa-solid fa-volume-high"></i></button>
-    //         </div>
-    //       </article>`;
     cardDiv.innerHTML = `
-          <article class="bg-white p-14 rounded-xl h-full">
+          <article class="bg-white p-8 rounded-xl h-full">
             <div class="flex flex-col justify-between">
               <div>
                 <h3 class="mb-3 font-bold text-3xl">${word.word}</h3>
                 <h4 class="mb-8 font-medium text-lg">Meaning / Pronounciation</h4>
-                <h3 class="mb-16 font-bangla font-semibold text-3xl">${word.meaning} / ${word.pronunciation}</h3>
+                <h3 class="mb-16 font-bangla font-semibold text-3xl">
+                ${word.meaning ? word.meaning : "অর্থ পাওয়া যায়নি"} / 
+                ${
+                  word.pronunciation
+                    ? word.pronunciation
+                    : "উচ্চারন পাওয়া যায়নি"
+                }</h3>
               </div>
               <div class="flex justify-between gap-4">
-                <button class="bg-[#1a91ff1a] hover:bg-[#1a91ff66] btn"><i class="fa-solid fa-circle-info"></i></button>
+                <button onclick="loadWordDetails(${word.id})" 
+                class="bg-[#1a91ff1a] hover:bg-[#1a91ff66] btn"><i class="fa-solid fa-circle-info"></i></button>
                 <button class="bg-[#1a91ff1a] hover:bg-[#1a91ff66] btn"><i class="fa-solid fa-volume-high"></i></button>
               </div>
             </div>
@@ -73,6 +97,45 @@ const displayWordsForSelLesson = (words) => {
     `;
     cardWrapper.appendChild(cardDiv);
   });
+};
+
+const loadWordDetails = async(wordId) => {
+  const url = "https://openapi.programming-hero.com/api/word/" + wordId;
+  // fetch(url)
+  //   .then((resp) => resp.json())
+  //   .then((data) => popWordDetails(data.data))
+  //   .catch((err) => console.log("Error:", err));
+  const resp = await fetch(url);
+  const dtls = await resp.json();
+  popWordDetails(dtls.data);
+};
+
+const popWordDetails = (wordinfo) => {
+  // console.log(wordinfo);
+  const wordDtlsBox = document.getElementById("word-dtls-box");
+
+  wordDtlsBox.innerHTML = `
+          <article class="p-6 border-[#EDF7FF] border-2 rounded-xl">
+            <h2 class="mb-10 font-semibold text-4xl"><span>${wordinfo.word}</span>
+              (<i class="fa-solid fa-microphone-lines"></i>:
+              <span class="font-bangla">${wordinfo.pronunciation}</span> )
+            </h2>
+
+            <h3 class="mb-4 font-semibold text-2xl">Meaning</h3>
+            <h4 class="mb-10 font-bangla font-medium text-2xl">${wordinfo.meaning}</h4>
+
+            <h3 class="mb-4 font-semibold text-2xl">Example</h3>
+            <h4 class="mb-10 text-2xl">${wordinfo.sentence}</h4>
+
+            <h3 class="mb-4 font-bangla text-2xl">সমার্থক শব্দ গুলো</h3>
+            <div class="flex flex-wrap justify-left gap-2">
+              <button class="btn btn-soft btn-primary">Enthusiastic</button>
+              <button class="btn btn-soft btn-primary">Excited</button>
+              <button class="btn btn-soft btn-primary">Keen</button>
+            </div>
+          </article>
+  `;
+  document.getElementById("wordModalDialog").showModal();
 };
 
 loadLessonButtons();
