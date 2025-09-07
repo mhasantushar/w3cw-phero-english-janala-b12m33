@@ -65,6 +65,7 @@
       </div>
     </header>
 
+    <!-- LOGIN AREA -->
     <section id="sect-login" class="flex md:flex-row flex-col justify-between items-center gap-4 mx-auto py-12 w-11/12">
       <div class="flex-1/2 md:text-left text-center">
         <h1 class="mb-6 font-bold text-5xl"><span class="text-sky-400">English</span> is Easy!!</h1>
@@ -79,9 +80,41 @@
       </div>
     </section>
 
-    <section id="sect-lets-learn-vocab" class="bg-amber-100 mx-auto py-12 w-11/12 text-center">
+    <!-- LET'S LEARN VOCABULARIES AREA -->
+    <section id="sect-lets-learn-vocab" class="mx-auto py-12 w-11/12 text-center">
       <h2 class="mb-6 font-bold text-4xl"><span class="text-sky-400">Let's</span> Learn Vocabularies</h2>
 
+      <!-- vocab lesson buttons -->
+      <div id="vocab-lesson-btns-wrapper" class="flex flex-wrap justify-center gap-4 mt-8 mb-10">
+        <!-- this is a template button - 
+        will be removed in runtime and dynamic data will populate here -->
+        <button class="vocab-lesson-btn btn btn-soft btn-primary"><i class="fa-solid fa-book-open"></i> Lesson - 0</button>
+      </div>
+
+      <!-- vocub lesson cards -->
+      <div id="vocub-cards-display" class="bg-[#f8f8f8] p-8 rounded-3xl">
+
+        <!-- show this when no lessoon is selected -->
+        <div id="vocab-cards-missing" class="hidden py-20">
+          <p class="text-sm"><span class="font-bangla">আপনি এখনো কোন</span> Lesson Select <span class="font-bangla">করেন
+              নি</span></p>
+          <p class="mt-4 font-medium text-4xl"><span class="font-bangla">একটি</span> Lesson Select <span
+              class="font-bangla">করুন।</span></p>
+        </div>
+
+        <!-- show this when a lesson is selected -->
+        <div id="vocab-cards-wrapper" class="gap-4 grid grid-cols-3">
+          <div class="bg-white p-14 rounded-xl">
+            <h3 class="mb-3 font-bold text-3xl">Eager</h3>
+            <h4 class="mb-8 font-medium text-lg">Meaning/Pronounciation</h4>
+            <h3 class="mb-16 font-bangla font-semibold text-3xl">"আগ্রহী / ইগার"</h3>
+            <div class="flex justify-between gap-4">
+              <button class="p-6 btn-outline btn"><i class="fa-solid fa-circle-info"></i></button>
+              <button class="p-6 btn-outline btn"><i class="fa-solid fa-volume-high"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
 
