@@ -88,14 +88,15 @@
       <div id="vocab-lesson-btns-wrapper" class="flex flex-wrap justify-center gap-4 mt-8 mb-10">
         <!-- this is a template button - 
         will be removed in runtime and dynamic data will populate here -->
-        <button class="vocab-lesson-btn btn btn-soft btn-primary"><i class="fa-solid fa-book-open"></i> Lesson - 0</button>
+        <button class="vocab-lesson-btn btn btn-soft btn-primary"><i class="fa-solid fa-book-open"></i> Lesson -
+          0</button>
       </div>
 
       <!-- vocub lesson cards -->
       <div id="vocub-cards-display" class="bg-[#f8f8f8] p-8 rounded-3xl">
 
         <!-- show this when no lessoon is selected -->
-        <div id="vocab-cards-missing" class="hidden py-20">
+        <div id="vocab-cards-missing" class="py-20">
           <p class="text-sm"><span class="font-bangla">আপনি এখনো কোন</span> Lesson Select <span class="font-bangla">করেন
               নি</span></p>
           <p class="mt-4 font-medium text-4xl"><span class="font-bangla">একটি</span> Lesson Select <span
@@ -104,15 +105,21 @@
 
         <!-- show this when a lesson is selected -->
         <div id="vocab-cards-wrapper" class="gap-4 grid grid-cols-3">
-          <div class="bg-white p-14 rounded-xl">
-            <h3 class="mb-3 font-bold text-3xl">Eager</h3>
-            <h4 class="mb-8 font-medium text-lg">Meaning/Pronounciation</h4>
-            <h3 class="mb-16 font-bangla font-semibold text-3xl">"আগ্রহী / ইগার"</h3>
-            <div class="flex justify-between gap-4">
-              <button class="p-6 btn-outline btn"><i class="fa-solid fa-circle-info"></i></button>
-              <button class="p-6 btn-outline btn"><i class="fa-solid fa-volume-high"></i></button>
+          <!-- this is a template card -
+          will be removed in runtime and dynamic data will populate here -->
+          <article class="hidden bg-white p-14 rounded-xl h-full">
+            <div class="flex flex-col justify-between bg-amber-100">
+              <div class="">
+                <h3 class="mb-3 font-bold text-3xl">Eager</h3>
+                <h4 class="mb-8 font-medium text-lg">Meaning / Pronounciation</h4>
+                <h3 class="mb-16 font-bangla font-semibold text-3xl">"আগ্রহী / ইগার"</h3>
+              </div>
+              <div class="flex justify-between gap-4">
+                <button class="bg-[#1a91ff1a] hover:bg-[#1a91ff66] btn"><i class="fa-solid fa-circle-info"></i></button>
+                <button class="bg-[#1a91ff1a] hover:bg-[#1a91ff66] btn"><i class="fa-solid fa-volume-high"></i></button>
+              </div>
             </div>
-          </div>
+          </article>
         </div>
       </div>
     </section>
