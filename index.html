@@ -28,8 +28,8 @@
   </head>
 
   <body>
-    <header>
-      <div class="bg-base-100 shadow-sm navbar">
+    <header class="">
+      <div class="bg-[#badeff42] bg-base-100 shadow-sm py-4 navbar">
         <div class="navbar-start">
           <div class="dropdown">
             <div tabindex="0" role="button" class="lg:hidden btn btn-ghost">
@@ -65,17 +65,24 @@
       </div>
     </header>
 
-    <section>
-      <div class="content">
-        <h1 class="font-bold text-5xl"><span class="text-cyan-400">English</span> is Easy!!</h1>
-        <p>আজ থেকেই আপনার ভাষা শেখার যাত্রা শুরু করুন। আপনি যদি নতুন হন অথবা আপনার দক্ষতা বাড়াতে চান, আমাদের Interactive Lessons আপনাকে নিয়ে যাবে অন্য একটি Level এ</p>
-        <input class="input" type="text" placeholder="Enter Your Name" required />
-        <input class="input" type="password" placeholder="Enter Your Password" required />
+    <section id="sect-login" class="flex md:flex-row flex-col justify-between items-center gap-4 mx-auto py-12 w-11/12">
+      <div class="flex-1/2 md:text-left text-center">
+        <h1 class="mb-6 font-bold text-5xl"><span class="text-sky-400">English</span> is Easy!!</h1>
+        <p class="mb-10 max-w-3xl font-bangla font-medium text-2xl/10">আজ থেকেই আপনার ভাষা শেখার যাত্রা শুরু করুন। আপনি
+          যদি নতুন হন অথবা আপনার দক্ষতা বাড়াতে চান, আমাদের Interactive Lessons আপনাকে নিয়ে যাবে অন্য একটি Level এ</p>
+        <input class="mb-5 input" type="text" placeholder="Enter Your Name" required /><br>
+        <input class="mb-5 input" type="password" placeholder="Enter Your Password" required /><br>
+        <button class="btn btn-primary">Get Started</button>
       </div>
-      <div class="image"></div>
+      <div class="">
+        <img class="block" src="./assets/hero-student.png" alt="hero image">
+      </div>
     </section>
 
+    <section id="sect-lets-learn-vocab" class="bg-amber-100 mx-auto py-12 w-11/12 text-center">
+      <h2 class="mb-6 font-bold text-4xl"><span class="text-sky-400">Let's</span> Learn Vocabularies</h2>
 
+    </section>
 
 
 
