@@ -1,5 +1,15 @@
 // console.log("Connected");
 
+const showSpinner = (status) => {
+  if (status === true) {
+    document.getElementById("spinner-loading").classList.remove("hidden");
+    document.getElementById("vocub-cards-display").classList.add("hidden");
+  } else {
+    document.getElementById("spinner-loading").classList.add("hidden");
+    document.getElementById("vocub-cards-display").classList.remove("hidden");
+  }
+};
+
 const loadLessonButtons = () => {
   const url = "https://openapi.programming-hero.com/api/levels/all";
 
@@ -28,6 +38,7 @@ const listLessonButtons = (lessons) => {
 };
 
 const loadWordsForSelLesson = (selLevel) => {
+  showSpinner(true);
   const url = "https://openapi.programming-hero.com/api/level/" + selLevel;
   // console.log(url);
 
@@ -36,8 +47,10 @@ const loadWordsForSelLesson = (selLevel) => {
     .then((data) => {
       markSelectedLessonButton(selLevel);
       displayWordsForSelLesson(data.data);
+      showSpinner(false);
     })
     .catch((err) => console.log("Error:", err));
+
 };
 
 const markSelectedLessonButton = (selLevel) => {
@@ -68,6 +81,7 @@ const displayWordsForSelLesson = (words) => {
               <span class="font-bangla">নেক্সট</span> Lesson <span class="font-bangla">এ যান</span></p>
           </div>
     `;
+    // showSpinner(false);
     return;
   }
   words.forEach((word) => {
@@ -97,9 +111,10 @@ const displayWordsForSelLesson = (words) => {
     `;
     cardWrapper.appendChild(cardDiv);
   });
+  // showSpinner(false);
 };
 
-const loadWordDetails = async(wordId) => {
+const loadWordDetails = async (wordId) => {
   const url = "https://openapi.programming-hero.com/api/word/" + wordId;
   // fetch(url)
   //   .then((resp) => resp.json())
@@ -116,26 +131,36 @@ const popWordDetails = (wordinfo) => {
 
   wordDtlsBox.innerHTML = `
           <article class="p-6 border-[#EDF7FF] border-2 rounded-xl">
-            <h2 class="mb-10 font-semibold text-4xl"><span>${wordinfo.word}</span>
+            <h2 class="mb-10 font-semibold text-4xl"><span>${
+              wordinfo.word
+            }</span>
               (<i class="fa-solid fa-microphone-lines"></i>:
               <span class="font-bangla">${wordinfo.pronunciation}</span> )
             </h2>
 
             <h3 class="mb-4 font-semibold text-2xl">Meaning</h3>
-            <h4 class="mb-10 font-bangla font-medium text-2xl">${wordinfo.meaning}</h4>
+            <h4 class="mb-10 font-bangla font-medium text-2xl">${
+              wordinfo.meaning
+            }</h4>
 
             <h3 class="mb-4 font-semibold text-2xl">Example</h3>
             <h4 class="mb-10 text-2xl">${wordinfo.sentence}</h4>
 
             <h3 class="mb-4 font-bangla text-2xl">সমার্থক শব্দ গুলো</h3>
             <div class="flex flex-wrap justify-left gap-2">
-              <button class="btn btn-soft btn-primary">Enthusiastic</button>
-              <button class="btn btn-soft btn-primary">Excited</button>
-              <button class="btn btn-soft btn-primary">Keen</button>
+              ${getWordSynonymElems(wordinfo.synonyms)}
             </div>
           </article>
   `;
   document.getElementById("wordModalDialog").showModal();
+};
+
+const getWordSynonymElems = (arrSynos) => {
+  // <button class="btn btn-soft btn-primary">Keen</button>
+  const htmlStr = arrSynos.map(
+    (elem) => `<button class="btn">${elem}</button>`
+  );
+  return htmlStr.join(" ");
 };
 
 loadLessonButtons();

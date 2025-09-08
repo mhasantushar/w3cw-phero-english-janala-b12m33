@@ -93,6 +93,11 @@
           0</button>
       </div>
 
+      <!-- spinner showing loading progress -->
+      <div id="spinner-loading" class="hidden py-12">
+        <span class="loading loading-infinity loading-xl"></span>
+      </div>
+
       <!-- vocub lesson cards -->
       <div id="vocub-cards-display" class="bg-[#f8f8f8] p-8 rounded-3xl">
         <div id="vocab-cards-wrapper" class="gap-4 grid grid-cols-3">
@@ -133,12 +138,12 @@
 
 
     <!-- Open the modal using ID.showModal() method -->
-    <button class="btn" onclick="wordModalDialog.showModal()">open modal</button>
+    <!-- <button class="btn" onclick="wordModalDialog.showModal()">open modal</button> -->
 
     <dialog id="wordModalDialog" class="modal-bottom modal sm:modal-middle">
       <div class="p-6 modal-box">
 
-        <div id = "word-dtls-box">
+        <div id="word-dtls-box">
           <!-- following is a template used to fetch dynamic data in runtime -->
           <article class="p-6 border-[#EDF7FF] border-2 rounded-xl">
             <h2 class="mb-10 font-semibold text-4xl"><span>Eager</span>
