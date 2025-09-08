@@ -1,5 +1,24 @@
 // console.log("Connected");
 
+function pronounceWord(word) {
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = "en-EN"; // English
+  window.speechSynthesis.speak(utterance);
+}
+
+const unselectAllLessonButton = () => {
+  const lessonBtns = document.getElementsByClassName("btn-lesson");
+  for (const btn of lessonBtns) {
+    btn.classList.remove("sel-lesson-btn");
+  }
+};
+
+const markSelectedLessonButton = (selLevel) => {
+  unselectAllLessonButton();
+  const selButtonId = "btn-lessonid-" + selLevel;
+  document.getElementById(selButtonId).classList.add("sel-lesson-btn");
+};
+
 const showSpinner = (status) => {
   if (status === true) {
     document.getElementById("spinner-loading").classList.remove("hidden");
@@ -8,6 +27,17 @@ const showSpinner = (status) => {
     document.getElementById("spinner-loading").classList.add("hidden");
     document.getElementById("vocub-cards-display").classList.remove("hidden");
   }
+};
+
+const searchVocab = (sWord, allWords) => {
+  // console.log (sWord);
+  // console.log (allWords);
+
+  const fWords = allWords.filter((iWord) =>
+    iWord.word.toLowerCase().includes(sWord)
+  );
+  // console.log (fWords);
+  displayWordsForSelLesson(fWords);
 };
 
 const loadLessonButtons = () => {
@@ -50,20 +80,6 @@ const loadWordsForSelLesson = (selLevel) => {
       showSpinner(false);
     })
     .catch((err) => console.log("Error:", err));
-
-};
-
-const markSelectedLessonButton = (selLevel) => {
-  const lessonBtns = document.getElementsByClassName("btn-lesson");
-  // lessonBtns.forEach((btn) => {
-  //   btn.classList.remove("sel-lesson-btn");
-  // });
-  for (const btn of lessonBtns) {
-    btn.classList.remove("sel-lesson-btn");
-  }
-
-  const selButtonId = "btn-lessonid-" + selLevel;
-  document.getElementById(selButtonId).classList.add("sel-lesson-btn");
 };
 
 const displayWordsForSelLesson = (words) => {
@@ -81,7 +97,7 @@ const displayWordsForSelLesson = (words) => {
               <span class="font-bangla">নেক্সট</span> Lesson <span class="font-bangla">এ যান</span></p>
           </div>
     `;
-    // showSpinner(false);
+    showSpinner(false);
     return;
   }
   words.forEach((word) => {
@@ -104,14 +120,15 @@ const displayWordsForSelLesson = (words) => {
               <div class="flex justify-between gap-4">
                 <button onclick="loadWordDetails(${word.id})" 
                 class="bg-[#1a91ff1a] hover:bg-[#1a91ff66] btn"><i class="fa-solid fa-circle-info"></i></button>
-                <button class="bg-[#1a91ff1a] hover:bg-[#1a91ff66] btn"><i class="fa-solid fa-volume-high"></i></button>
+                <button onclick="pronounceWord('${word.word}')" 
+                class="bg-[#1a91ff1a] hover:bg-[#1a91ff66] btn"><i class="fa-solid fa-volume-high"></i></button>
               </div>
             </div>
           </article>
     `;
     cardWrapper.appendChild(cardDiv);
   });
-  // showSpinner(false);
+  showSpinner(false);
 };
 
 const loadWordDetails = async (wordId) => {
@@ -164,3 +181,18 @@ const getWordSynonymElems = (arrSynos) => {
 };
 
 loadLessonButtons();
+
+document.getElementById("btn-search-vocab").addEventListener("click", () => {
+  showSpinner(true);
+  unselectAllLessonButton();
+
+  const fldSearch = document.getElementById("fld-search-vocab");
+  const strSearch = fldSearch.value.trim().toLowerCase();
+  // console.log(strSearch);
+
+  const url = "https://openapi.programming-hero.com/api/words/all";
+  fetch(url)
+    .then((resp) => resp.json())
+    .then((data) => searchVocab(strSearch, data.data))
+    .catch((err) => console.log("Error:", err));
+});
